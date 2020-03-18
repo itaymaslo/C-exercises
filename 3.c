@@ -1,5 +1,6 @@
 # include<stdio.h>
 # include<stdlib.h>
+# include<string.h> 
 
 int** init_square(int square_size);  
 void print_square(int** square, int square_size);  
@@ -10,8 +11,8 @@ int EMPTY_CELL_VALUE = 0;
 
 int main() {
 	/*
- 	* Exercise 3 - Generating magic squares.
- 	*/
+	* Exercise 3 - Generating magic squares.
+	*/
 	int square_size = 0;
 	
 	printf("Choose the size of the magic square : ");
@@ -32,23 +33,22 @@ int main() {
 
 int** init_square(int square_size) {
 	/*
- 	* Malloc and give initial values to the cells in the square.
- 	*/ 
+	* Malloc and give initial values to the cells in the square.
+	*/ 
 	int** square = (int**)malloc(square_size * sizeof(int*));
 
 	for (int i = 0; i < square_size; ++i) {
 		square[i] = (int*)malloc(square_size * sizeof(int));
-		for (int j = 0; j < square_size  ; ++j)
-			square[i][j] = EMPTY_CELL_VALUE;
+		memset(square[i], EMPTY_CELL_VALUE, square_size);
 	}
 	return square;
 }
 
 void generate_magic_square(int ** square, int square_size) {
 	/*
- 	* Make the given empty square a magic square,
- 	* using the da la Lounere's method.
- 	*/
+	* Make the given empty square a magic square,
+	* using the da la Lounere's method.
+	*/
 	int col = square_size / 2;
 	int row = 0;
 	
@@ -89,19 +89,16 @@ void  print_square(int** square, int square_size) {
 	int space_max = count_digits(square_size * square_size) + 1;
 	for (int i = 0; i < square_size; ++i) {
 		for (int j = 0; j < square_size; ++j) {
-			int spaces = space_max - count_digits(square[i][j]);
-			printf("%d",square[i][j]);
-			for (int t = 0; t < spaces; ++t)
-				printf(" ");
+			printf("%*d", space_max, square[i][j]);
 		}
 		printf("\n");
 	};
 	printf("\n");
 }
 
-void free_square(int** array, int square_size) {
+void free_square(int** square, int square_size) {
 	for (int i = 0; i < square_size; i++)
-		free(array[i]);
-	free(array);
+		free(square[i]);
+	free(square);
 }
 
